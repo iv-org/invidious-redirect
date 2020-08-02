@@ -1,0 +1,29 @@
+# In reality, you'd generate the SSL configuration using Mozilla's website:
+# https://ssl-config.mozilla.org/
+# This simple example does not do this.
+
+server {
+	listen 80;
+	server_name invidious-redirect.cadence.moe;
+	return 301 https://invidious-redirect.cadence.moe$request_uri;
+}
+
+server {
+	listen 443 ssl http2;
+	server_name invidious-redirect.cadence.moe;
+	ssl_certificate /etc/letsencrypt/live/cadence.moe/fullchain.pem;
+	ssl_certificate_key /etc/letsencrypt/live/cadence.moe/privkey.pem;
+
+	add_header "strict-transport-security" "max-age=31536000; includeSubDomains; preload";
+
+	root /var/www/invidious-redirect;
+
+	location / {
+		try_files $uri /index.html;
+	}
+
+	location /api {
+		add_header "content-type" "application/json";
+		return 410 "{\"error\":\"This server no longer hosts the Invidious API.\"}\n";
+	}
+}
