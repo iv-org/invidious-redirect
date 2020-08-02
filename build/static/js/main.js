@@ -39,7 +39,7 @@
 				healthKnown
 			}
 		}).filter(entry => {
-			return entry.details.type === "https"
+			return entry.details.type === "https" && entry.health > 0
 		}).sort((a, b) => {
 			return b.health - a.health
 		}).forEach(entry => {
