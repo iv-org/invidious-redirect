@@ -15,24 +15,40 @@
 		return e
 	}
 
+	function shuffle(array) {
+		for (let i = 0; i < array.length; i++) {
+			let j = Math.floor(Math.random() * (array.length-i)) + i
+			;[array[i], array[j]] = [array[j], array[i]]
+		}
+		return array
+	}
+
 	const destinationPath = window.location.href.slice(window.location.origin.length)
 
 	q("#watch-on-youtube").href = "https://www.youtube.com" + destinationPath
 
-	fetch("https://instances.invidio.us/instances.json?pretty=1&sort_by=type,health").then(res => res.json()).then(
+	fetch("https://instances.invidio.us/instances.json?sort_by=type,health").then(res => res.json()).then(
 	/** @param {[string, {monitor: any, flag: string, region: string, stats: any, type: string, uri: string}][]} root */ root => {
-		console.log(root)
-		root.filter(entry => entry[1].type === "https").forEach(entry => {
-			let healthUnknown = "health-unknown "
-			let health = "(unknown)"
-			if (entry[1].monitor && entry[1].monitor.dailyRatios && entry[1].monitor.dailyRatios[0]) {
-				health = entry[1].monitor.dailyRatios[0].ratio
-				healthUnknown = ""
+		shuffle(root)
+		root.map(entry => {
+			const healthKnown = !!entry[1].monitor
+			return {
+				name: entry[0],
+				details: entry[1],
+				health: +(healthKnown ? entry[1].monitor.dailyRatios[0].ratio : 99),
+				healthKnown
 			}
-			let target = entry[1].uri.replace(/\/*$/, "") + destinationPath
+		}).filter(entry => {
+			return entry.details.type === "https"
+		}).sort((a, b) => {
+			return b.health - a.health
+		}).forEach(entry => {
+			let target = entry.details.uri.replace(/\/*$/, "") + destinationPath
+			const healthUnknown = entry.healthKnown ? "" : "health-unknown "
+			const health = entry.healthKnown ? entry.health.toFixed(0) : "(unknown)"
 			q("#instances-tbody").appendChild(
 				createElement("tr", {}, [
-					createElement("td", {textContent: entry[0]}),
+					createElement("td", {textContent: entry.name}),
 					createElement("td", {className: "column-center "+healthUnknown, textContent: health}),
 					createElement("td", {className: "column-center"}, [
 						createElement("a", {href: target, textContent: "Go →"})

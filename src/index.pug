@@ -35,7 +35,7 @@ html(lang="en")
 			.requires-scripts
 				p.
 					To see this content, please select another instance,
-					or #[a#watch-on-youtube watch directly on YouTube.]
+					or #[a#watch-on-youtube visit directly on YouTube.]
 			noscript
 				p.
 					To see this content, please select another instance,
@@ -58,11 +58,15 @@ html(lang="en")
 					-
 						const instances = [
 							"invidious.snopyta.org",
-							"yewtu.be",
-							"watch.nettohikari.com",
+							"invidious.ggc-project.de",
 							"invidious.13ad.de",
+							"yewtu.be",
+							"invidious.fdn.fr",
+							"invidious.toot.koeln",
+							"invidiou.site",
+							"yt.iswleuven.be",
 							"vid.mint.lgbt",
-							"invidiou.site"
+							"watch.nettohikari.com"
 						]
 					for instance in instances
 						li: a(href=`https://${instance}`)= instance

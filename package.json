@@ -5,7 +5,7 @@
   "main": "build.js",
   "scripts": {
     "build": "node src/build.js",
-    "watch": "fish -c 'while true; inotifywait (find src -type f) -e close_write -q; npm run build; end'"
+    "watch": "fish -c 'while true; npm run build; inotifywait (find src -type f) -e close_write -q; end'"
   },
   "keywords": [],
   "author": "",
