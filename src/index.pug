@@ -1,0 +1,68 @@
+//- Needs static
+
+doctype html
+html(lang="en")
+	head
+		title Select instance - Invidious
+		meta(charset="utf-8")
+		meta(name="viewport" content="width=device-width, initial-scale=1")
+		link(rel="stylesheet" type="text/css" href=static.get("/main.sass"))
+		script(src=static.get("/main.js") text="text/javascript" defer)
+	body
+		noscript
+			style.
+				.requires-scripts {
+					display: none;
+				}
+		script(type="text/javascript").
+			document.body.classList.remove("yesscript")
+
+		header.banner
+			.logo
+			h1 Invidious
+
+		noscript
+			.script-warning
+				p.
+					You are seeing the fallback version of this page.#[br]
+					Some features are missing.
+				p.
+					JavaScript is required to use the regular page.
+
+		.story
+			p.
+				As of September 1st 2020, #[mark invidio.us] has closed down.
+			.requires-scripts
+				p.
+					To see this content, please select another instance,
+					or #[a#watch-on-youtube watch directly on YouTube.]
+			noscript
+				p.
+					To see this content, please select another instance,
+					or #[a(href="https://www.youtube.com") go to YouTube] and find it yourself.
+
+		.instances-table.requires-scripts
+			table
+				thead
+					tr
+						th(scope="col") Domain
+						th(scope="col") Health
+						th(scope="col") Action
+				tbody#instances-tbody
+					tr.loading
+						td(colspan="3").loading-td Loading instances...
+		noscript
+			.instances-list
+				h2 Available instances
+				ul.list
+					-
+						const instances = [
+							"invidious.snopyta.org",
+							"yewtu.be",
+							"watch.nettohikari.com",
+							"invidious.13ad.de",
+							"vid.mint.lgbt",
+							"invidiou.site"
+						]
+					for instance in instances
+						li: a(href=`https://${instance}`)= instance

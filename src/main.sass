@@ -1,0 +1,132 @@
+@mixin prefers-dark
+	@media (prefers-color-scheme: dark)
+		@content
+
+@mixin desktop
+	@media screen and (min-width: 520px)
+		@content
+
+:root
+	--bg-primary: #fcf5f4
+	--bg-secondary: #e9e1df
+	--bg-tertiary: #cec8c6
+	--fg-header: #000
+	--fg-primary: #181818
+	--fg-dim: #646464
+	--fg-link: #2664b5
+	--edge-mark: #aaa
+	--edge-table: #333
+
+	@include prefers-dark
+		--bg-primary: #232323
+		--bg-secondary: #191919
+		--bg-tertiary: #383838
+		--fg-header: #fff
+		--fg-primary: #d9d9d9
+		--fg-dim: #828282
+		--fg-link: #529ef5
+		--edge-mark: #555
+		--edge-table: #aaa
+
+body
+	background-color: var(--bg-primary)
+	color: var(--fg-primary)
+	font-size: 20px
+	margin: 0
+	padding: 8px
+	font-family: sans-serif
+
+a, a:visited
+	color: var(--fg-link)
+
+noscript
+	display: block
+
+mark
+	background-color: var(--bg-tertiary)
+	color: var(--fg-primary)
+	padding: 3px 5px
+	border-radius: 4px
+	border: 1px solid var(--edge-mark)
+
+table, td, th
+	border: 1px solid var(--edge-table)
+	border-collapse: collapse
+
+td, th
+	padding: 4px 8px
+
+thead, tr:nth-child(even)
+	background-color: var(--bg-secondary)
+
+.banner
+	display: grid
+	grid-gap: 24px
+	align-items: center
+	justify-items: center
+	justify-content: center
+	padding: 20px
+
+	@include desktop
+		grid-template-columns: 80px auto
+
+	.logo
+		width: 80px
+		height: 80px
+		background-size: contain
+		background-image: url(static("/assets/img/invidious-logo-light.svg"))
+
+		@include prefers-dark
+			background-image: url(static("/assets/img/invidious-logo-dark.svg"))
+
+	h1
+		color: var(--fg-header)
+		font-size: 56px
+		font-weight: bold
+		text-transform: uppercase
+		margin: 0
+		padding: 0
+
+.story
+	margin: 40px 0px
+	text-align: center
+
+	@include desktop
+		white-space: pre-line
+
+.instances-table
+	display: flex
+	justify-content: center
+
+	table
+		width: 100%
+		max-width: 700px
+
+.instances-list
+	text-align: center
+
+	.list
+		margin: 0 auto
+		padding-left: 1em
+		text-align: left
+		max-width: max-content
+
+.loading-td
+	text-align: center
+	padding: 20px
+	background-color: var(--bg-secondary)
+
+.column-center
+	text-align: center
+
+.health-unknown
+	color: var(--fg-dim)
+
+.script-warning
+	margin: 0 auto
+	max-width: max-content
+	background: #700
+	color: #fff
+	padding: 4px 20px
+	border-radius: 8px
+	border: 1px solid
