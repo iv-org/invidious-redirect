@@ -1,0 +1,25 @@
+doctype html
+html(lang="en")
+	head
+		title JavaScript licenses - Invidious
+		meta(charset="utf-8")
+		meta(name="viewport" content="width=device-width, initial-scale=1")
+		link(rel="stylesheet" type="text/css" href=static.get("/main.sass"))
+	body
+		include header.pug
+
+		.js-license-table
+			table#jslicense-labels1
+				thead
+					tr
+						th(scope="col") File
+						th(scope="col") License
+						th(scope="col") Source
+				tbody
+					each script in scripts
+						tr
+							td: a(href=script.minified)= script.minified
+							td: a(href=script.licenseHref)= script.license
+							td: a(href=script.original)= script.original
+
+		include footer.pug

@@ -23,11 +23,28 @@
 		return array
 	}
 
+	function request(url) {
+		return new Promise((resolve, reject) => {
+			const xhr = new XMLHttpRequest()
+			xhr.addEventListener("readystatechange", () => {
+				if (xhr.readyState === 4) {
+					if (xhr.status === 200) {
+						resolve(JSON.parse(xhr.response))
+					}
+				}
+			})
+			xhr.open("GET", url)
+			xhr.send()
+		})
+	}
+
 	const destinationPath = window.location.href.slice(window.location.origin.length)
 
 	q("#watch-on-youtube").href = "https://www.youtube.com" + destinationPath
 
-	fetch("https://instances.invidio.us/instances.json?sort_by=type,health").then(res => res.json()).then(
+	qa("[data-loading-message]").forEach(e => e.textContent = e.getAttribute("data-loading-message"))
+
+	request("https://instances.invidio.us/instances.json?sort_by=type,health").then(
 	/** @param {[string, {monitor: any, flag: string, region: string, stats: any, type: string, uri: string}][]} root */ root => {
 		shuffle(root)
 		root.map(entry => {
@@ -35,7 +52,7 @@
 			return {
 				name: entry[0],
 				details: entry[1],
-				health: +(healthKnown ? entry[1].monitor.dailyRatios[0].ratio : 99),
+				health: +(healthKnown ? entry[1].monitor.dailyRatios[0].ratio : 95),
 				healthKnown
 			}
 		}).filter(entry => {

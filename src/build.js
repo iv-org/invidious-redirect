@@ -5,15 +5,46 @@ const sass = require("sass")
 const fs = require("fs").promises
 const crypto = require("crypto")
 const pj = require("path").join
+const babel = require("@babel/core")
 
 const buildDir = "../build"
+
+const static = new Map()
+const links = new Map()
+const scripts = []
+const pugLocals = {static, scripts, links}
+
+const spec = [
+	{
+		type: "file",
+		source: "/assets/img/invidious-logo-dark.svg",
+		target: "/static/img/invidious-logo-dark.svg"
+	},{
+		type: "file",
+		source: "/assets/img/invidious-logo-light.svg",
+		target: "/static/img/invidious-logo-light.svg"
+	},{
+		type: "sass",
+		source: "/main.sass",
+		target: "/static/css/main.css"
+	},{
+		type: "babel",
+		source: "/main.js",
+		target: "/static/js/main.js"
+	},{
+		type: "pug",
+		source: "/index.pug",
+		target: "/index.html"
+	},{
+		type: "pug",
+		source: "/js-licenses.pug",
+		target: "/js-licenses.html"
+	}
+]
 
 function hash(buffer) {
 	return crypto.createHash("sha256").update(buffer).digest("hex").slice(0, 10)
 }
-
-const static = new Map()
-const pugLocals = {static}
 
 async function addFile(sourcePath, targetPath) {
 	const contents = await fs.readFile(pj(".", sourcePath), {encoding: null})
@@ -43,16 +74,71 @@ async function addPug(sourcePath, targetPath) {
 	await fs.writeFile(pj(buildDir, targetPath), renderedHTML)
 }
 
-;(async () => {
+async function addBabel(sourcePath, targetPath) {
+	const originalCode = await fs.readFile(pj(".", sourcePath), "utf8")
+
+	const compiled = babel.transformSync(originalCode, {
+		sourceMaps: true,
+		sourceType: "script",
+		presets: [
+			[
+				"@babel/env", {
+					targets: {
+						"ie": 11
+					}
+				}
+			]
+		],
+		generatorOpts: {
+			comments: false,
+			minified: true,
+			sourceMaps: true,
+		}
+	})
+
+	const minFilename = targetPath.replace(/\.js$/, ".min.js")
+	const minFilenameWithQuery = `${minFilename}?static=${hash(compiled.code)}`
+	const mapFilename = `${minFilename}.map`
+
+	compiled.code += `\n//# sourceMappingURL=${mapFilename}`
+
+	static.set(sourcePath, minFilenameWithQuery)
+	scripts.push({
+		original: targetPath,
+		minified: minFilenameWithQuery,
+		license: "GNU-AGPL-3.0-or-later",
+		licenseHref: "https://www.gnu.org/licenses/agpl-3.0.html"
+	})
+
 	await Promise.all([
-		addFile("/assets/img/invidious-logo-dark.svg", "/static/img/invidious-logo-dark.svg"),
-		addFile("/assets/img/invidious-logo-light.svg", "/static/img/invidious-logo-light.svg"),
-		addFile("/main.js", "/static/js/main.js")
+		fs.writeFile(pj(buildDir, targetPath), originalCode),
+		fs.writeFile(pj(buildDir, minFilename), compiled.code),
+		fs.writeFile(pj(buildDir, mapFilename), JSON.stringify(compiled.map))
 	])
+}
 
-	addSass("/main.sass", "/static/css/main.css")
+;(async () => {
+	// Stage 1: Register
+	for (const item of spec) {
+		if (item.type === "pug") {
+			links.set(item.source, item.target)
+		}
+	}
 
-	addPug("/index.pug", "/index.html")
+	// Stage 2: Build
+	for (const item of spec) {
+		if (item.type === "file") {
+			await addFile(item.source, item.target)
+		} else if (item.type === "sass") {
+			await addSass(item.source, item.target)
+		} else if (item.type === "babel") {
+			await addBabel(item.source, item.target)
+		} else if (item.type === "pug") {
+			await addPug(item.source, item.target)
+		} else {
+			throw new Error("Unknown item type: "+item.type)
+		}
+	}
 
 	console.log("Build complete.")
 })()

@@ -1,5 +1,3 @@
-//- Needs static
-
 doctype html
 html(lang="en")
 	head
@@ -14,12 +12,8 @@ html(lang="en")
 				.requires-scripts {
 					display: none;
 				}
-		script(type="text/javascript").
-			document.body.classList.remove("yesscript")
 
-		header.banner
-			.logo
-			h1 Invidious
+		include header.pug
 
 		noscript
 			.script-warning
@@ -50,7 +44,8 @@ html(lang="en")
 						th(scope="col") Action
 				tbody#instances-tbody
 					tr.loading
-						td(colspan="3").loading-td Loading instances...
+						td(colspan="3" data-loading-message="Loading instances...").loading-td Trying to run scripts...
+
 		noscript
 			.instances-list
 				h2 Available instances
@@ -70,3 +65,5 @@ html(lang="en")
 						]
 					for instance in instances
 						li: a(href=`https://${instance}`)= instance
+
+		include footer.pug

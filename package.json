@@ -10,11 +10,12 @@
   "keywords": [],
   "author": "",
   "license": "AGPL-3.0-only",
-  "dependencies": {
+  "dependencies": {},
+  "devDependencies": {
+    "@babel/core": "^7.11.1",
+    "@babel/preset-env": "^7.11.0",
+    "http-server": "^0.12.3",
     "pug": "^3.0.0",
     "sass": "^1.26.10"
-  },
-  "devDependencies": {
-    "http-server": "^0.12.3"
   }
 }

@@ -59,6 +59,12 @@ td, th
 thead, tr:nth-child(even)
 	background-color: var(--bg-secondary)
 
+footer
+	font-size: 16px
+	text-align: center
+	max-width: 500px
+	margin: 40px auto
+
 .banner
 	display: grid
 	grid-gap: 24px
@@ -94,7 +100,7 @@ thead, tr:nth-child(even)
 	@include desktop
 		white-space: pre-line
 
-.instances-table
+.instances-table, .js-license-table
 	display: flex
 	justify-content: center
 
@@ -130,3 +136,15 @@ thead, tr:nth-child(even)
 	padding: 4px 20px
 	border-radius: 8px
 	border: 1px solid
+
+.footer-link-list
+	margin: 0
+	padding: 0
+	justify-content: center
+	display: flex
+	list-style-type: none
+	white-space: pre-wrap
+
+	li:not(:first-child)::before
+		content: " • "
+		display: inline
