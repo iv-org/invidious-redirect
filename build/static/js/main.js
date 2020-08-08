@@ -40,7 +40,9 @@
 
 	q("#watch-on-youtube").href = "https://www.youtube.com" + destinationPath
 
-	qa("[data-loading-message]").forEach(e => e.textContent = e.getAttribute("data-loading-message"))
+	for (const e of qa("[data-loading-message]")) {
+		e.textContent = e.getAttribute("data-loading-message")
+	}
 
 	request("https://instances.invidio.us/instances.json?sort_by=type,health",
 	/** @param {[string, {monitor: any, flag: string, region: string, stats: any, type: string, uri: string}][]} root */ (err, root) => {
@@ -71,6 +73,9 @@
 				])
 			)
 		})
-		qa(".loading").forEach(e => e.remove())
+
+		for (const e of qa(".loading")) {
+			e.remove()
+		}
 	})
 })()
