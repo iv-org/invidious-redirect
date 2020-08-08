@@ -23,19 +23,17 @@
 		return array
 	}
 
-	function request(url) {
-		return new Promise((resolve, reject) => {
-			const xhr = new XMLHttpRequest()
-			xhr.addEventListener("readystatechange", () => {
-				if (xhr.readyState === 4) {
-					if (xhr.status === 200) {
-						resolve(JSON.parse(xhr.response))
-					}
+	function request(url, callback) {
+		const xhr = new XMLHttpRequest()
+		xhr.addEventListener("readystatechange", () => {
+			if (xhr.readyState === 4) {
+				if (xhr.status === 200) {
+					callback(null, JSON.parse(xhr.response))
 				}
-			})
-			xhr.open("GET", url)
-			xhr.send()
+			}
 		})
+		xhr.open("GET", url)
+		xhr.send()
 	}
 
 	const destinationPath = window.location.href.slice(window.location.origin.length)
@@ -44,8 +42,8 @@
 
 	qa("[data-loading-message]").forEach(e => e.textContent = e.getAttribute("data-loading-message"))
 
-	request("https://instances.invidio.us/instances.json?sort_by=type,health").then(
-	/** @param {[string, {monitor: any, flag: string, region: string, stats: any, type: string, uri: string}][]} root */ root => {
+	request("https://instances.invidio.us/instances.json?sort_by=type,health",
+	/** @param {[string, {monitor: any, flag: string, region: string, stats: any, type: string, uri: string}][]} root */ (err, root) => {
 		shuffle(root)
 		root.map(entry => {
 			const healthKnown = !!entry[1].monitor
