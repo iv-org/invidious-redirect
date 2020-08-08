@@ -105,9 +105,9 @@ async function addBabel(sourcePath, targetPath) {
 	static.set(sourcePath, minFilenameWithQuery)
 	scripts.push({
 		original: targetPath,
-		minified: minFilenameWithQuery,
+		minified: minFilename,
 		license: "GNU-AGPL-3.0-or-later",
-		licenseHref: "https://www.gnu.org/licenses/agpl-3.0.html"
+		licenseHref: "http://www.gnu.org/licenses/agpl-3.0.html"
 	})
 
 	await Promise.all([
