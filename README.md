@@ -2,7 +2,14 @@
 
 Backstory: https://github.com/iv-org/invidious/issues/1321
 
-Preview: https://invidious-redirect.cadence.moe/
+Live: https://invidio.us/
+
+Build Instructions
+
+```
+npm install -D
+npm run build
+```
 
 If you have questions, comments, or changes, either reply to the
 GitHub issue above, or email them to
