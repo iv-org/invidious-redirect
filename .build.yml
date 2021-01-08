@@ -1,0 +1,13 @@
+image: ubuntu/20.10
+packages:
+  - runc
+  - podman
+sources:
+  - https://git.sr.ht/~cadence/invidious-redirect
+secrets:
+  - df99e6e8-09f9-470e-8617-5228a3121638
+tasks:
+  - build: |
+      cd invidious-redirect
+      podman build -t quay.io/invidious/invidious-redirect:latest .
+  - push: podman push quay.io/invidious/invidious-redirect:latest
