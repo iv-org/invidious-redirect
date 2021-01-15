@@ -5,7 +5,7 @@ packages:
 sources:
   - https://git.sr.ht/~cadence/invidious-redirect
 secrets:
-  - df99e6e8-09f9-470e-8617-5228a3121638
+  - dea6a8f9-aba8-4ecc-8ce7-bc4707b30a96
 tasks:
   - build: |
       cd invidious-redirect
