@@ -44,7 +44,7 @@
 		e.textContent = e.getAttribute("data-loading-message")
 	}
 
-	request("https://instances.invidio.us/instances.json?sort_by=type,health",
+	request("https://api.invidious.io/instances.json?sort_by=type,health",
 	/** @param {[string, {monitor: any, flag: string, region: string, stats: any, type: string, uri: string}][]} root */ (err, root) => {
 		shuffle(root)
 		root.map(entry => {
