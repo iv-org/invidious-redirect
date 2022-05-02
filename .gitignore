@@ -2,3 +2,5 @@ node_modules
 .vscode
 *~
 \#*#
+build/index.html
+build/js-licenses.html
