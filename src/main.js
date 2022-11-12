@@ -38,7 +38,7 @@
 
 	const destinationPath = window.location.href.slice(window.location.origin.length)
 
-	q("#watch-on-youtube").href = "https://www.youtube.com" + destinationPath
+	q("#watch-on-youtube").href = "https://www.youtube.com/watch?v=" + destinationPath
 
 	for (const e of qa("[data-loading-message]")) {
 		e.textContent = e.getAttribute("data-loading-message")
