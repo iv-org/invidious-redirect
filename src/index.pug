@@ -68,7 +68,7 @@ html(lang="en")
 						]
 					for instance in instances
 						li
-							= `instance.flag `
+							= `${instance.flag} `
 							a(href=`https://${instance.url}`)= instance.url
 
 		include footer.pug
