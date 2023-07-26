@@ -37,12 +37,13 @@ html(lang="en")
 			table
 				thead
 					tr
+						th(scope="col") Region
 						th(scope="col") Domain
 						th(scope="col") Health
 						th(scope="col") Action
 				tbody#instances-tbody
 					tr.loading
-						td(colspan="3" data-loading-message="Loading instances...").loading-td Trying to run scripts...
+						td(colspan="4" data-loading-message="Loading instances...").loading-td Trying to run scripts...
 
 		noscript
 			.instances-list
@@ -67,7 +68,7 @@ html(lang="en")
 						]
 					for instance in instances
 						li
-							a(href=`https://${instance["url"]}`)= instance["url"]
-							span= '(' + instance["flag"] + ')'
+							= `instance.flag `
+							a(href=`https://${instance.url}`)= instance.url
 
 		include footer.pug
