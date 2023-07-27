@@ -50,23 +50,7 @@ html(lang="en")
 				h2 Available instances
 				ul.list
 					-
-						const instances = [
-							{url: "yewtu.be", flag: "🇳🇱"},
-							{url: "vid.puffyan.us", flag: "🇺🇸"},
-							{url: "invidious.flokinet.to", flag: "🇷🇴"},
-							{url: "invidious.projectsegfau.lt", flag: "🇫🇷"},
-							{url: "inv.bp.projectsegfau.lt", flag: "🇱🇺"},
-							{url: "inv.in.projectsegfau.lt", flag: "🇮🇳"},
-							{url: "invidious.tiekoetter.com", flag: "🇩🇪"},
-							{url: "invidious.slipfox.xyz", flag: "🇺🇸"},
-							{url: "invidious.privacydev.net", flag: "🇫🇷"},
-							{url: "vid.priv.au", flag: "🇸🇬"},
-							{url: "iv.ggtyler.dev", flag: "🇨🇦"},
-							{url: "invidious.0011.lt", flag: "🇱🇹"},
-							{url: "inv.zzls.xyz", flag: "🇨🇱"},
-							{url: "invidious.protokolla.fi", flag: "🇫🇮"},
-						]
-					for instance in instances
+					for instance in instancesJson
 						li
 							= `${instance.flag} `
 							a(href=`https://${instance.url}`)= instance.url

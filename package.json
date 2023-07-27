@@ -5,12 +5,12 @@
   "main": "build.js",
   "scripts": {
     "build": "node src/build.js",
+    "update-instances": "node scripts/update-instance-list.js",
     "watch": "fish -c 'while true; npm run build; inotifywait (find src -type f) -e close_write -q; end'"
   },
   "keywords": [],
   "author": "",
   "license": "AGPL-3.0-only",
-  "dependencies": {},
   "devDependencies": {
     "@babel/core": "^7.11.1",
     "@babel/preset-env": "^7.11.0",

@@ -65,6 +65,7 @@
 			const health = entry.healthKnown ? entry.health.toFixed(0) : "(unknown)"
 			q("#instances-tbody").appendChild(
 				createElement("tr", {}, [
+					createElement("td", {textContent: `${entry.details.flag} ${entry.details.region}`}),
 					createElement("td", {textContent: entry.name}),
 					createElement("td", {className: "column-center "+healthUnknown, textContent: health}),
 					createElement("td", {className: "column-center"}, [

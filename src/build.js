@@ -12,7 +12,7 @@ const buildDir = "../build"
 const static = new Map()
 const links = new Map()
 const scripts = []
-const pugLocals = {static, scripts, links}
+const pugLocals = {static, scripts, links, instancesJson: []}
 
 const spec = [
 	{
@@ -119,6 +119,8 @@ async function addBabel(sourcePath, targetPath) {
 
 ;(async () => {
 	// Stage 1: Register
+	pugLocals.instancesJson = JSON.parse(await fs.readFile('../instances.json', 'utf8'))
+
 	for (const item of spec) {
 		if (item.type === "pug") {
 			links.set(item.source, item.target)
