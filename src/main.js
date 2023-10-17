@@ -37,6 +37,7 @@
 	}
 
 	const destinationPath = window.location.href.slice(window.location.origin.length)
+	const isApiUrl = destinationPath.startsWith('/api/v1')
 
 	q("#watch-on-youtube").href = "https://www.youtube.com" + destinationPath
 
@@ -45,7 +46,7 @@
 	}
 
 	request("https://api.invidious.io/instances.json?sort_by=type,health",
-	/** @param {[string, {monitor: any, flag: string, region: string, stats: any, type: string, uri: string}][]} root */ (err, root) => {
+	/** @param {[string, {monitor: any, api: boolean, flag: string, region: string, stats: any, type: string, uri: string}][]} root */ (err, root) => {
 		shuffle(root)
 		root.map(entry => {
 			const healthKnown = !!entry[1].monitor
@@ -53,10 +54,11 @@
 				name: entry[0],
 				details: entry[1],
 				health: +(healthKnown ? entry[1].monitor.uptime : 95),
+				apiEnabled: entry[1].api,
 				healthKnown
 			}
 		}).filter(entry => {
-			return entry.details.type === "https" && entry.health > 0
+			return entry.details.type === "https" && entry.health > 0 && (!isApiUrl || entry.apiEnabled)
 		}).sort((a, b) => {
 			return b.health - a.health
 		}).forEach(entry => {
