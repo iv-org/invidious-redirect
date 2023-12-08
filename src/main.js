@@ -56,15 +56,27 @@
 				healthKnown
 			}
 		}).filter(entry => {
-			return entry.details.type === "https" && entry.health > 0
+			return entry.health > 0
 		}).sort((a, b) => {
 			return b.health - a.health
 		}).forEach(entry => {
-			let target = entry.details.uri.replace(/\/*$/, "") + destinationPath
+			let address = entry.details.uri.replace(/\/*$/, "")
+			let target = address + destinationPath
 			const healthUnknown = entry.healthKnown ? "" : "health-unknown "
+			let type = "default"
+			switch(address.substr(address.lastIndexOf('.')+1))
+			{
+				case "onion":
+					type = "onion"
+					break
+				case "i2p":
+					type = "i2p"
+					break
+			}
 			const health = entry.healthKnown ? entry.health.toFixed(0) : "(unknown)"
 			q("#instances-tbody").appendChild(
 				createElement("tr", {}, [
+					createElement("td", {className: "column-center", textContent: type}),
 					createElement("td", {textContent: `${entry.details.flag} ${entry.details.region}`}),
 					createElement("td", {textContent: entry.name}),
 					createElement("td", {className: "column-center "+healthUnknown, textContent: health}),
