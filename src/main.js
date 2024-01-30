@@ -52,7 +52,7 @@
 			return {
 				name: entry[0],
 				details: entry[1],
-				health: 100,
+				health: +(healthKnown ? entry[1].monitor.dailyRatios[0].ratio : 95),
 				healthKnown
 			}
 		}).filter(entry => {
